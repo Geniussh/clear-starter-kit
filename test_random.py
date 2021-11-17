@@ -1,10 +1,16 @@
 import json
+import os
+import time
 import numpy as np
 from evaluator.base_predictor import AIcrowdPredictor
 
 
 class RandomPredictor(AIcrowdPredictor):
     def __init__(self):
+
+        while not os.path.exists("/tmp/let-go"):
+            time.sleep(10)
+
         self.model = None
         self.model_path = "models/model.json"
         self.load_model()
