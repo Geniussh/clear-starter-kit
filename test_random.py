@@ -1,4 +1,6 @@
 import json
+import os
+import time
 import numpy as np
 from evaluator.base_predictor import AIcrowdPredictor
 
@@ -20,6 +22,7 @@ class RandomPredictor(AIcrowdPredictor):
         result = []
         for sample in batch_input:
             result.append(np.random.randint(self.model["lower_bound"], self.model["upper_bound"]))
+        print("Prediction is", result)
         return result
 
 
