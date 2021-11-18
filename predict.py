@@ -1,3 +1,15 @@
+"""
+=========
+IMPORTANT
+=========
+
+THE CONTENTS OF THIS FILE WILL BE REPLACED DURING EVALUATION.
+ANY CHANGES MADE TO THIS FILE WILL BE DROPPED DURING EVALUATION.
+
+THIS FILE IS PROVIDED ONLY FOR YOUR CONVINIENCE TO TEST THE CODE LOCALLY.
+
+"""
+
 from tqdm.auto import trange
 from config import SubmissionConfig
 from evaluator.evaluator import AIcrowdEvaluator
