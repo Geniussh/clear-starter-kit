@@ -53,7 +53,7 @@ In this challenge, you will train your models locally and then upload them to AI
 We recommend that you place your models in `models` directory and write your predictors in `test_<predictor>.py` file (though it is not mandatory). Any predictor you write should implement ... methods as follows.
 
 ```python
-from evaluator.base_predictor import AIcrowdPredictor
+from evaluation_utils.base_predictor import AIcrowdPredictor
 
 
 class MyPredictor(AIcrowdPredictor):
