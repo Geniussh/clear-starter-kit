@@ -11,3 +11,9 @@ class MNISTPredictor(BaseMNISTPredictor):
 
     def prediction(self, image_file_path: str):
         return np.random.randint(0, 10)
+
+
+if __name__ == "__main__":
+    from local_evaluation import main
+
+    main()
