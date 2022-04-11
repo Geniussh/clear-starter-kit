@@ -44,30 +44,13 @@ In this challenge, you will train your models locally and then upload them to AI
 ![](https://i.imgur.com/xzQkwKV.jpg)
 
 1. **Sign up** to join the competition [on the AIcrowd website](https://www.aicrowd.com/challenges/mnist/).
-2. **Clone** this repo and start developing your solution.
+2. **Fork** this repo and start developing your solution.
 3. **Train** your models for ... and write your predictor code as described in [how to write your own predictor](#how-to-write-your-own-predictor) section.
 4. [**Submit**](#how-to-submit-a-model) your trained models to [AIcrowd Gitlab](https://gitlab.aicrowd.com) for evaluation [(full instructions below)](#how-to-submit-a-model). The automated evaluation setup will evaluate the submissions against the test dataset to compute and report the metrics on the leaderboard of the competition.
 
 # How to write your own predictor?
 
-We recommend that you place your models in `models` directory and write your predictors in `test_<predictor>.py` file (though it is not mandatory). Any predictor you write should implement ... methods as follows.
-
-```python
-from evaluation_utils.base_predictor import AIcrowdPredictor
-
-
-class MyPredictor(AIcrowdPredictor):
-    def __init__(self):
-        # Load your models, initialize them etc.,
-        pass
-
-    def predict_batch(self, batch_input):
-        # Do something here
-        return [1, 1, 1]  # return predictions
-
-```
-
-Update the `SubmissionConfig` in [config.py](config.py#L5) to use your new agent class instead of the `RandomPredictor`.
+We recommend that you place your models in `models` directory (though it is not mandatory) and use the interface defined in `run.py`. 
 
 # How to start participating?
 
@@ -80,7 +63,7 @@ You can add your SSH Keys to your GitLab account by going to your profile settin
 2.  **Clone the repository**
 
     ```
-    git clone git@gitlab.aicrowd.com:aicrowd/starter-kits/mnist-starter-kit.git
+    git clone git@gitlab.aicrowd.com:<your-username>/mnist-starter-kit.git
     ```
 
 3. **Install** competition specific dependencies!
@@ -89,7 +72,7 @@ You can add your SSH Keys to your GitLab account by going to your profile settin
     pip install -r requirements.txt
     ```
 
-4. Try out the random predictor by running `python predict.py`.
+4. Try out the random predictor by running `python local_evaluation.py`.
 
 5. Write your own predictor as described in [how to write your own predictor](#how-to-write-your-own-predictor) section.
 
@@ -112,10 +95,10 @@ The different files and directories have following meaning:
 .
 ├── aicrowd.json           # Submission meta information - like your username
 ├── apt.txt                # Packages to be installed inside docker image
+├── evaluation_utils/      # Directory containing helper scripts for evaluation (DO NOT EDIT)
 ├── requirements.txt       # Python packages to be installed
-├── predict.py             # Entrypoint to test your code locally (DO NOT EDIT, will be replaced during evaluation)
-├── config.py              # File containing env, simulator and submission configuration
-└── test_my_predictor.py   # IMPORTANT: Add your own predictor
+├── local_evaluation.py    # Helper script for local evaluations
+└── run.py                 # IMPORTANT: Add your own predictor
 ```
 
 Finally, **you must specify an AIcrowd submission JSON in `aicrowd.json` to be scored!** 
@@ -125,9 +108,10 @@ The `aicrowd.json` of each submission should contain the following content:
 ```json
 {
   "challenge_id": "mnist",
-  "authors": ["your-aicrowd-username"],
-  "description": "(optional) description about your awesome agent",
-  "external_dataset_used": false
+  "authors": [
+    "your-aicrowd-username"
+  ],
+  "description": "(optional) description about your awesome agent"
 }
 ```
 
@@ -153,10 +137,9 @@ This JSON is used to map your submission to the challenge - so please remember t
 
 🙏 You can share your solutions or any other baselines by contributing directly to this repository by opening merge request.
 
-- Add your implemntation as `test_<predictor_name>.py`.
-- Test it out using `python predict.py`.
+- Add your implementation.
+- Test it out using `python local_evaluation.py`.
 - Add any documentation for your approach at top of your file.
-- Import it in `config.py`
 - Create merge request! 🎉🎉🎉 
 
 ## Contributors
