@@ -27,8 +27,7 @@ If you are resource-constrained or would not like to setup everything in your sy
 4. [How do I specify my software runtime / dependencies?](#how-do-i-specify-my-software-runtime-dependencies-)
 5. [What should my code structure be like ?](#what-should-my-code-structure-be-like-)
 6. [How to make submission](#how-to-make-submission)
-7. [Other concepts](#other-concepts)
-8. [Important links](#-important-links)
+7. [Important links](#-important-links)
 
 
 #  Competition Procedure
@@ -122,16 +121,6 @@ This JSON is used to map your submission to the challenge - so please remember t
 👉 [SUBMISSION.md](/docs/SUBMISSION.md)
 
 **Best of Luck** :tada: :tada:
-
-# Other Concepts
-
-## Time constraints
-
-// todo: Add time constraints (+ timestep budget, max episodes, etc.,)
-
-## Local Evaluation
-
-// todo: How to run evaluations locally? (ideally just run `python rollout.py` after setup)
 
 ## Contributing
 

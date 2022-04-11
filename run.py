@@ -7,7 +7,8 @@ class MNISTPredictor(BaseMNISTPredictor):
         pass
 
     def prediction_setup(self):
-        pass
+        seed_value = 12345
+        np.random.seed(seed_value)
 
     def prediction(self, image_file_path: str):
         return np.random.randint(0, 10)
