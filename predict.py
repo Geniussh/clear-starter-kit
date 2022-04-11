@@ -12,12 +12,12 @@ THIS FILE IS PROVIDED ONLY FOR YOUR CONVINIENCE TO TEST THE CODE LOCALLY.
 
 from tqdm.auto import trange
 from config import SubmissionConfig
-from evaluator.evaluator import AIcrowdEvaluator
+from evaluator.mnist_evaluator import MNISTEvaluator
 
 
 def main():
     predictor = SubmissionConfig.predictor()
-    evaluator = AIcrowdEvaluator()
+    evaluator = MNISTEvaluator()
     scores = []
 
     iterations = 10000

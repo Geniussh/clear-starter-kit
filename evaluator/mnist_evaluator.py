@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class AIcrowdEvaluator:
+class MNISTEvaluator:
     def __init__(self):
         pass
 
