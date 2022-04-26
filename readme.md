@@ -53,29 +53,24 @@ We recommend that you place your models in `models` directory (though it is not 
 
 # How to start participating?
 
-## Setup
+## Using this repository
 
-1. **Add your SSH key** to AIcrowd GitLab
+This repository contains a submission template.
 
-You can add your SSH Keys to your GitLab account by going to your profile settings [here](https://gitlab.aicrowd.com/profile/keys). If you do not have SSH Keys, you will first need to [generate one](https://docs.gitlab.com/ee/ssh/README.html#generating-a-new-ssh-key-pair).
+```bash
+# Clone the repository
+git clone https://gitlab.aicrowd.com/aicrowd/mnist-starter-kit.git
+cd mnist-starter-kit
 
-2.  **Clone the repository**
+# Install dependencies
+pip install -r requirements.txt
 
-    ```
-    git clone git@gitlab.aicrowd.com:<your-username>/mnist-starter-kit.git
-    ```
+# Run codebase locally
+python rollout.py
+```
 
-3. **Install** competition specific dependencies!
-    ```
-    cd mnist-starter-kit
-    pip install -r requirements.txt
-    ```
+todo: some description of what the script does
 
-4. Try out the random predictor by running `python local_evaluation.py`.
-
-5. Write your own predictor as described in [how to write your own predictor](#how-to-write-your-own-predictor) section.
-
-6. Make a submission as described in [how to make a submission](#how-to-make-a-submission) section.
 
 ## How do I specify my software runtime / dependencies ?
 
@@ -118,7 +113,16 @@ This JSON is used to map your submission to the challenge - so please remember t
 
 ## How to make a submission?
 
-👉 [SUBMISSION.md](/docs/SUBMISSION.md)
+We have added a quick submission utility script as part of this starter kit, to keep things simple. You can make submission as follows:
+
+```
+./submit.sh <unique-submission-name>
+
+Example: ./submit.sh "bayes v0.1"
+```
+
+In case you don't want to use this utility script, please check out the submission guidelines [submission.md](docs/submission.md).
+
 
 **Best of Luck** :tada: :tada:
 
