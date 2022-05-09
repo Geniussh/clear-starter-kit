@@ -2,7 +2,7 @@
 
 set -e
 
-export CHALLENGE="mnist"
+export CHALLENGE="cvpr-2022-clear-challenge"
 REPO_ROOT_DIR=$(git rev-parse --show-toplevel)
 
 log_info() {
@@ -88,17 +88,17 @@ check_cli_install() {
   if [ $retval -ne 0 ]; then
     log_error 'Please install AIcrowd CLI using `pip install -U aicrowd-cli`';exit 1
   fi
-  python -c 'from aicrowd.contexts.config import CLIConfig;c=CLIConfig();c.load(None);exit(1) if c.get("aicrowd_api_key") is None else True'
+  python3 -c 'from aicrowd.contexts.config import CLIConfig;c=CLIConfig();c.load(None);exit(1) if c.get("aicrowd_api_key") is None else True'
   retval=$?
   if [ $retval -ne 0 ]; then
     log_error 'Please login to AIcrowd using `aicrowd login`';exit 1
   fi
-  export USERNAME=$(python -c 'from aicrowd.contexts.config import CLIConfig;c=CLIConfig();c.load(None);print(c.get("gitlab")["username"])')
+  export USERNAME=$(python3 -c 'from aicrowd.contexts.config import CLIConfig;c=CLIConfig();c.load(None);print(c.get("gitlab")["username"])')
   retval=$?
   if [ $retval -ne 0 ]; then
     log_error 'You might be on older AIcrowd CLI version. Please upgrade using `pip install -U aicrowd-cli` and login again.';exit 1
   fi
-  export OAUTH=$(python -c 'from aicrowd.contexts.config import CLIConfig;c=CLIConfig();c.load(None);print(c.get("gitlab")["oauth_token"])')
+  export OAUTH=$(python3 -c 'from aicrowd.contexts.config import CLIConfig;c=CLIConfig();c.load(None);print(c.get("gitlab")["oauth_token"])')
   git remote add aicrowd https://oauth2:$OAUTH@gitlab.aicrowd.com/$USERNAME/$CHALLENGE-starter-kit.git 2> /dev/null
   git config lfs.https://oauth2:$OAUTH@gitlab.aicrowd.com/$USERNAME/$CHALLENGE-starter-kit.git/info/lfs.locksverify true
   git config lfs.https://gitlab.aicrowd.com/$USERNAME/$CHALLENGE-starter-kit.git/info/lfs.locksverify true
@@ -109,7 +109,7 @@ check_cli_install() {
   git config --global user.email > /dev/null
   retval=$?
   if [ $retval -ne 0 ]; then
-    export GITID=$(python -c 'from aicrowd.contexts.config import CLIConfig;c=CLIConfig();c.load(None);print(c.get("gitlab")["userid"])')
+    export GITID=$(python3 -c 'from aicrowd.contexts.config import CLIConfig;c=CLIConfig();c.load(None);print(c.get("gitlab")["userid"])')
     log_normal "Git setup dont have email defined, setting it to \"${GITID}-${USERNAME}@users.noreply.gitlab.aicrowd.com\""
     git config --global user.email "${GITID}-${USERNAME}@users.noreply.gitlab.aicrowd.com"
     git config --global user.name $USERNAME
@@ -131,4 +131,3 @@ if [[ $# -lt 1 ]]; then
 fi
 
 submit "$@"
-

@@ -11,16 +11,18 @@ THIS FILE IS PROVIDED ONLY FOR YOUR CONVINIENCE TO TEST THE CODE LOCALLY.
 """
 
 import os
-from evaluation_utils.mnist_evaluator import MNISTEvaluator
-from run import MNISTPredictor
+from evaluation_utils.clear_evaluator import CLEAREvaluator
+from run import CLEARPredictor
 
 
 def main():
-    evaluator = MNISTEvaluator(
-        test_data_path=os.getenv("AICROWD_DATASET_DIR", "data/images"),
-        predictions_file_path=os.getenv("AICROWD_PREDICTIONS_FILE", "data/results.csv"),
-        ground_truth_data_path=os.getenv("AICROWD_GROUND_TRUTH_PATH", "data/labels.csv"),
-        predictor=MNISTPredictor(),
+    evaluator = CLEAREvaluator(
+        test_data_path=os.getenv("AICROWD_DATASET_DIR", "test_data"),
+        models_path=os.path.join(os.getcwd(), "models"),
+        predictions_file_path=os.getenv(
+            "AICROWD_PREDICTIONS_FILE", "results/shared/predictions.txt"
+        ),
+        predictor=CLEARPredictor(),
     )
     evaluator.evaluation()
     scores = evaluator.scoring(evaluator.ground_truth_path, evaluator.predictions_file_path)
