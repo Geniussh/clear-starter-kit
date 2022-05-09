@@ -3,12 +3,12 @@
 # [CLEAR](https://www.aicrowd.com/challenges/cvpr-2022-clear-challenge/) | Starter Kit 
 [![Discord](https://img.shields.io/discord/565639094860775436.svg)](https://discord.gg/fNRrSvZkry)
 
-This repository is the CLEAR **Submission template and Starter kit**! Clone the repository to compete now!
+This repository is the CLEAR Challenge **Submission template and Starter kit** for [CVPR 2022 Workshop on Visual Perception and Learning in an Open World](https://www.cs.cmu.edu/~shuk/vplow.html)! Clone the repository to compete now!
 
 **This repository contains**:
-*  **Documentation** on how to submit your models to the leaderboard
-*  **The procedure** for best practices and information on how we evaluate your agent, etc.
 *  **Starter code** for you to get started!
+*  **Documentation** on how to submit your models to the AICrowd leaderboard.
+*  **The procedure** for best practices and information on how we evaluate your models, etc.
 
 # Table of Contents
 
@@ -23,55 +23,93 @@ This repository is the CLEAR **Submission template and Starter kit**! Clone the 
 
 #  Competition Procedure
 
-[Continual LEArning on Real-World Imagery (CLEAR)](https://clear-benchmark.github.io/) is the first continual image classification benchmark dataset with a natural temporal evolution of visual concepts in the real world that spans a decade (2004-2014). This competition will be an opportunity for researchers and machine learning enthusiasts to experiment and explore state-of-the-art Continual Learning (CL) algorithms on this novel dataset. In addition, submissions will be evaluated with our novel streaming evaluation protocols that we have proposed in the [paper](https://arxiv.org/abs/2201.06289). 
+[Continual LEArning on Real-World Imagery (CLEAR)](https://clear-benchmark.github.io/) is the first continual image classification benchmark dataset with a natural temporal evolution of visual concepts in the real world that spans a decade (2004-2014). This competition will be an opportunity for researchers and machine learning enthusiasts to experiment and explore state-of-the-art Continual and Lifelong Learning algorithms on this novel benchmark based on the [NeurIPS 2021 paper](https://arxiv.org/abs/2201.06289).
+
+The competition will be hosted on two datasets:
+- **CLEAR-10**: The dataset introduced in [NeurIPS 2021 paper](https://arxiv.org/abs/2201.06289) with 10 buckets of training images from 11 classes.
+- **CLEAR-100**: A new version of CLEAR that consists of more classes (100!) with 10 buckets spanning 2004-2014 (Coming soon in a week..)
 
 The challenge consists of two stages: 
 - **Stage 1**  
 
-Participants train their models locally using the public dataset consisting of 10 public trainsets following the streaming protocol, i.e. train today and test on tomorrow. Participants upload their models (10 in total, each is a model checkpoint train consecutively on the 10 trainsets) along with their training script as one submission to AICrowd for evaluation against our private hold-out testset. Each of the 10 models will be evaluated on the 10 hold-out testsets, obtaining an 10x10 accuracy matrix. The evaluation metrics are 4 different summarization of the accuracy matrix, i.e. In-Domain Accuracy (mean of diagonal), Next-Domain Accuracy (mean of superdiagonal), Forward Transfer (mean of upper triangular entries), Backward Transfer (mean of lower triangular entries). Details about these metrics can be found in the paper. We take a weighted average of the 4 metrics when determining the rankings in  the leaderboard.
+Participants train their models locally using the released CLEAR dataset consisting of 10 trainsets. The 10 trainsets will arrive sequentially, and in contrast to prior continual learning benchmarks, we do not pose an artificial constraint on the buffer size, which means you could use all images prior to the current timestamp to train your model (i.e., cumulative training). However, we do limit the maximum training time allowed for each timestamp (12 hours on a single GTX1080TI). The training time on different GPUs can be approximated using this [chart](https://mtli.github.io/gpubench/), so you may use other types of GPUs to develop your solution. Participants upload their models (10 in total, each is a model checkpoint saved after training on each timestamp) along with their training and evaluation scripts to AICrowd. The 10 submitted models will be evaluated against our private hold-out testsets. We have 10 hold-out testsets for both CLEAR10 and CLEAR100 collected on YFCC100M on the same time periods; therefore, each submission will get an 10x10 accuracy matrix. The evaluation metrics are 4 different summarization of the accuracy matrix, i.e. In-Domain Accuracy (mean of diagonal), Next-Domain Accuracy (mean of superdiagonal), Forward Transfer (mean of upper triangular entries), Backward Transfer (mean of lower triangular entries). Details about these metrics can be found in later section. We take an weighted average of the 4 metrics when determining the rankings in the leaderboard.
 
 _The following is a high level description of how this process works_
 
 ![](https://i.imgur.com/xzQkwKV.jpg)
 
 1. **Sign up** to join the competition [on the AIcrowd website](https://www.aicrowd.com/challenges/cvpr-2022-clear-challenge/).
-2. **Fork** this repo and start developing your solution.
-3. **Train** your models for ... and write your predictor code as described in [how to write your own predictor](#how-to-write-your-own-predictor) section.
-4. [**Submit**](#how-to-submit-a-model) your trained models to [AIcrowd Gitlab](https://gitlab.aicrowd.com) for evaluation [(full instructions below)](#how-to-submit-a-model). The automated evaluation setup will evaluate the submissions against the test dataset to compute and report the metrics on the leaderboard of the competition.
+2. **Clone** this repo and start developing your solution.
+3. **Train and save** your models using [starter_code.py](starter_code.py) as the initial template (purely PyTorch-based), or refer to our [Avalanche-based training script](https://github.com/ContinualAI/avalanche/blob/master/examples/clear.py).
+4. **Evaluate** your models with your own predictor code as described in [how to write your own predictor](#how-to-write-your-own-predictor) section.
+4. [**Submit**](#how-to-submit-a-model) your trained models as well as evaluation script to [AIcrowd Gitlab](https://gitlab.aicrowd.com) for evaluation [(full instructions below)](#how-to-submit-a-model). The automated evaluation setup will evaluate the submissions against our private testsets to compute and report the metrics on the leaderboard of the competition.
 
 - **Stage 2**  
 
 The top 3 teams on the public leaderboard in Stage 1 will be asked to provide a dockerized environment to train their models on our own servers. We will validate each team's models submitted to the leaderboard by training their models within the specified time limit, comparing the accuracy with the baselines, as well as verifying that they did not use auxilary information to train the model (e.g., pre-trained network, additional labeled data, and etc.). Teams with invalid submissions will be removed from the leaderboard, and remaining top-3 teams with valid submissions will be eligible for the awards.
 
-# How to write your own predictor?
+# How to set up the environment/dataset
+We have partnered up with the most popular open-sourced continual learning library [Avalanche](https://avalanche.continualai.org). The starter code for this competition (including data downloading and training) will be based on [Avalanche](https://avalanche.continualai.org), though we also provided a template ([starter_code.py](starter_code.py)) based purely on PyTorch so you don't need to [learn Avalanche](https://avalanche.continualai.org/getting-started/learn-avalanche-in-5-minutes) if you have no prior experience working with it.
 
-We require that you place your models in `models` directory and use the interface defined in `run.py`. 
-
-# How to start participating?
-
-## Setup
+To set up the environment, you will need [Ananconda](https://www.anaconda.com) installed on your system. Then you may follow the following steps:
 
 1. **Add your SSH key** to AIcrowd GitLab
 
 You can add your SSH Keys to your GitLab account by going to your profile settings [here](https://gitlab.aicrowd.com/profile/keys). If you do not have SSH Keys, you will first need to [generate one](https://docs.gitlab.com/ee/ssh/README.html#generating-a-new-ssh-key-pair).
 
 2.  **Clone the repository**
-
     ```
-    git clone git@gitlab.aicrowd.com:<your-username>/clear-starter-kit.git
-    ```
-
-3. **Install** competition specific dependencies!
-    ```
-    cd mnist-starter-kit
-    pip install -r requirements.txt
+    git clone git@gitlab.aicrowd.com:Geniussh/clear-starter-kit.git
+    cd clear-starter-kit
     ```
 
-4. Try out the random predictor by running `python local_evaluation.py`.
+3. **Create** a virtual conda environment
+    ```
+    conda create -n clear_2022 python=3.8 -c conda-forge
+    conda activate clear_2022
+    ```
 
-5. Write your own predictor as described in [how to write your own predictor](#how-to-write-your-own-predictor) section.
+4. **Install** AIcrowd competition specific dependencies via:
+    ```
+    pip install aicrowd-cli
+    ```
 
-6. Make a submission as described in [how to make a submission](#how-to-make-a-submission) section.
+5. **Install** the most recent PyTorch version from their [official website](https://pytorch.org/get-started/). Make sure to specify a CUDA version for GPU usage. For example:
+    ```
+    conda install pytorch torchvision torchaudio cudatoolkit=11.3 -c pytorch
+    ```
+
+6. **Clone** the master branch of [Avalanche](https://avalanche.continualai.org) and update conda env via:
+    ```
+    git clone https://github.com/ContinualAI/avalanche.git
+    conda env update --file avalanche/environment.yml
+    ```
+
+7. **(Optional) Modify** [config.py](./config.py) with your local path to avalanche library.
+
+8. Start training via running:
+    ```
+    python starter_code.py
+    ```
+
+9. Write your own predictor (including test-time data augmentation and model loading functions) as described in [how to write your own predictor](#how-to-write-your-own-predictor) section.
+
+10. Make a submission as described in [how to make a submission](#how-to-make-a-submission) section.
+
+
+<!-- # How to access and use the CLEAR dataset
+We have made CLEAR public on [Avalanche](https://avalanche.continualai.org). If you have used Avalanche for your other projects, then it is very easy to get started! Just pull the most recent commit from their official [repo](https://github.com/ContinualAI/avalanche), and check out [this example on how to train on CLEAR](https://github.com/ContinualAI/avalanche/blob/master/examples/clear.py). If you haven't used Avalanche before, you could use the [starter code](starter_code.py) provided to download CLEAR dataset from Avalanche, and perform training and evaluation in PyTorch only (so you don't need to know anything about Avalanche).  -->
+
+# How to write your own predictor?
+
+We require that you place your models in `models` directory and use the interface defined in `run.py`. 
+
+
+# Evaluation Metrics
+![metrics](imgs/metrics.png)
+The submitted model will be evaluated against the private testsets to obtain an 10x10 accuracy matrix (we provide a 4x4 accuracy matrix above to visually illustrate how we calculate the metrics). The y-axis is the training timestamp and x-axis is the index of test bucket.
+
+The leaderboard will consists of the above 4 metrics. In-Domain and Next-Domain accuracy are proposed in the [CLEAR paper](https://arxiv.org/abs/2201.06289) for measuring the test performance within the same time period or the next immediate time period. Backward Transfer and Forward Transfer are defined similarly to prior works on continual learning.
 
 ## How do I specify my software runtime / dependencies ?
 
