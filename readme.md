@@ -13,8 +13,9 @@ This repository is the CLEAR Challenge **Submission template and Starter kit** f
 # Table of Contents
 
 1. [Competition Procedure](#competition-procedure)
-2. [How to access and use dataset](#how-to-access-and-use-dataset)
-3. [How to start participating](#how-to-start-participating)
+2. [How to set up the environment/dataset](#how-to-set-up-the-environmentdataset)
+3. [Evaluation Metrics](#evaluation-metrics)
+4. [What to provide for the evaluation](#what-to-provide-for-the-evaluation)
 4. [How do I specify my software runtime / dependencies?](#how-do-i-specify-my-software-runtime-dependencies-)
 5. [What should my code structure be like ?](#what-should-my-code-structure-be-like-)
 6. [How to make submission](#how-to-make-submission)
@@ -107,7 +108,7 @@ The submitted model will be evaluated against the private testsets to obtain an 
 The leaderboard will consists of the above 4 metrics. In-Domain and Next-Domain accuracy are proposed in the [CLEAR paper](https://arxiv.org/abs/2201.06289) for measuring the test performance within the same time period or the next immediate time period. Backward Transfer and Forward Transfer are defined similarly to prior works on continual learning.
 
 
-# What to provide for the evaluation?
+# What to provide for the evaluation
 
 We require that you place your 10 trained models in `models` directory and use the interface defined in `evaluation_setup.py`. In `evaluation_setup.py`, you need to explicitly provide the two following functions so that we can evaluate your models and auto-generated your scores on our end. 
 - `load_models(models_path)` takes in the path to the 10 trained models, i.e. `models/`, and it should return a list of loaded models. How you load each of them is up to you and should be consistent with how you saved your models. For example, if you saved your models as its parameter dictionary, then you want to use `torch.nn.Module.load_state_dict`; otherwise if you saved the entire model, you want to use `torch.save` directly. [Note that if you trained your models using `torch.nn.DataParallel`, there will be `module.` inserted at the beginning of each key of your saved state_dict, in which case loading the state_dict onto a model from `torchvision.models` will fail. Therefore, you need to remove the `module.` key when implementing this function, as already shown in the [example](evaluation_setup.py).
