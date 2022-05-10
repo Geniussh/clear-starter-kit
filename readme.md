@@ -100,9 +100,9 @@ You can add your SSH Keys to your GitLab account by going to your profile settin
 <!-- # How to access and use the CLEAR dataset
 We have made CLEAR public on [Avalanche](https://avalanche.continualai.org). If you have used Avalanche for your other projects, then it is very easy to get started! Just pull the most recent commit from their official [repo](https://github.com/ContinualAI/avalanche), and check out [this example on how to train on CLEAR](https://github.com/ContinualAI/avalanche/blob/master/examples/clear.py). If you haven't used Avalanche before, you could use the [starter code](starter_code.py) provided to download CLEAR dataset from Avalanche, and perform training and evaluation in PyTorch only (so you don't need to know anything about Avalanche).  -->
 
-# How to write your own predictor?
+# What to provide for the evaluation?
 
-We require that you place your models in `models` directory and use the interface defined in `run.py`. 
+We require that you place your models in `models` directory and use the interface defined in `evaluation_setup.py`. 
 
 
 # Evaluation Metrics
