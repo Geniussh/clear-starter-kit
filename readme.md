@@ -18,7 +18,7 @@ This repository is the CLEAR Challenge **Submission template and Starter kit** f
 4. [What to provide for the evaluation](#what-to-provide-for-the-evaluation)
 4. [How do I specify my software runtime / dependencies?](#how-do-i-specify-my-software-runtime-dependencies-)
 5. [What should my code structure be like ?](#what-should-my-code-structure-be-like-)
-6. [How to make submission](#how-to-make-submission)
+6. [How to make submission](#how-to-make-a-submission)
 7. [Important links](#-important-links)
 
 
