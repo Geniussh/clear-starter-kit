@@ -121,9 +121,9 @@ Finally one step before you can actually submit your great work! To validate you
 
 We accept submissions with custom runtime, so you don't need to worry about which libraries or framework to pick from.
 
-The configuration files typically include `requirements.txt` (pypi packages), `environment.yml` (conda environment), `apt.txt` (apt packages) or even your own `Dockerfile`.
+The configuration files typically include `requirements.txt` (pypi packages), `environment.yml` (conda environment), `apt.txt` (apt packages) or even your own `Dockerfile`. You can check detailed information about the same in the 👉 [RUNTIME.md](docs/runtime.md) file.
 
-You can check detailed information about the same in the 👉 [RUNTIME.md](docs/runtime.md) file.
+Remember to put all extra dependencies you have used in `evaluation_setup.py` into your configuration file (in this template it's `requirements.txt`).
 
 # What should my code structure be like ?
 
@@ -133,11 +133,13 @@ The different files and directories have following meaning:
 ```
 .
 ├── aicrowd.json           # Submission meta information - like your username
-├── apt.txt                # Packages to be installed inside docker image
 ├── evaluation_utils/      # Directory containing helper scripts for evaluation (DO NOT EDIT)
 ├── requirements.txt       # Python packages to be installed
 ├── local_evaluation.py    # Helper script for local evaluations
 └── evaluation_setup.py    # IMPORTANT: Add your data transform and model loading functions that are consistent with your trained models
+└── starter_code.py        # Example model training script using Avalanche on CLEAR benchmark
+└── config.py              # Configuration file for Avalanche library
+└── submit.sh              # Helper script for submission
 ```
 
 Finally, **you must specify an AIcrowd submission JSON in `aicrowd.json` to be scored!** 
@@ -147,6 +149,7 @@ The `aicrowd.json` of each submission should contain the following content:
 ```json
 {
   "challenge_id": "clear-2022",
+  "task": "clear10", 
   "authors": [
     "your-aicrowd-username"
   ],
@@ -155,7 +158,7 @@ The `aicrowd.json` of each submission should contain the following content:
 }
 ```
 
-This JSON is used to map your submission to the challenge - so please remember to use the correct `challenge_id` as specified above.
+This JSON is used to map your submission to the challenge - so please remember to use the correct `challenge_id` and the correct `task` you wish to submit your code to, as specified above.
 
 Also, make sure the ```gpu``` flag is true so we can speed up the evaluation. 
 
