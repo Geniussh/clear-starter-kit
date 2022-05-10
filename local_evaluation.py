@@ -11,22 +11,74 @@ THIS FILE IS PROVIDED ONLY FOR YOUR CONVINIENCE TO TEST THE CODE LOCALLY.
 """
 
 import os
+import numpy as np
+import torch
+import torchvision.transforms as transforms
+from torch.autograd import Variable
 from evaluation_utils.clear_evaluator import CLEAREvaluator
-from run import CLEARPredictor
+from evaluation_utils.base_predictor import BaseCLEARPredictor
+from evaluation_utils.CLEAR10 import CLEAR10IMG
+from torch.utils.data import DataLoader
+
+# Import participant's prediction class
+from evaluation_setup import load_models, data_transform
+
+
+class CLEARPredictor(BaseCLEARPredictor):
+    def __init__(self, bucket_num=10, use_gpu=True):
+        self.bucket_num = bucket_num
+        self.use_gpu = use_gpu
+        self.models = [None] * self.bucket_num
+
+    def prediction_setup(self, models_path):
+        print("[DEBUG] Loading models...")
+        self.models = load_models(models_path)
+        assert(len(self.models)) == self.bucket_num
+
+    def prediction(self, image_file_path: str):
+        # Data Loader
+        print("[DEBUG] Loading and Transforming Test Data...")
+        transform = data_transform()
+        test_data = [CLEAR10IMG(image_file_path, i, form="all", debug=False, transform=transform) for i in range(self.bucket_num)]
+        test_loaders = [DataLoader(test_data[i], shuffle=False, num_workers=4) for i in range(len(test_data))]
+
+        # Inference
+        print("[DEBUG] Inference...")
+        R = np.zeros((self.bucket_num,)*2)  # accuracy matrix
+        for i, model in enumerate(self.models):
+            for j, test_loader in enumerate(test_loaders):
+                print('Evaluate timestamp %d model on bucket %d' % (i, j))
+                if self.use_gpu: 
+                    model.to('cuda')
+                R[i, j] = self.test(model, test_loader)
+            del model
+
+        return R
+
+    def test(self, model, test_loader):
+        total_test_acc = 0
+        model.eval()
+        with torch.no_grad():
+            for xb, yb in test_loader:
+                if self.use_gpu:
+                    xb, yb = Variable(xb.cuda()), Variable(yb.cuda())
+                y_pred = model(xb)
+                _, preds = torch.max(y_pred.data, 1)
+                total_test_acc += torch.sum(preds == yb.data)
+        avg_test_acc = total_test_acc / len(test_loader.dataset)
+        print('Test Accuracy: {:.2f}'.format(avg_test_acc))
+        
+        return avg_test_acc.cpu().numpy().squeeze()
 
 
 def main():
     evaluator = CLEAREvaluator(
-        test_data_path=os.getenv("AICROWD_DATASET_DIR", "test_data"),
-        models_path=os.path.join(os.getcwd(), "models"),
-        predictions_file_path=os.getenv(
-            "AICROWD_PREDICTIONS_FILE", "results/shared/predictions.txt"
-        ),
+        test_data_path="datasets/clear10/labeled_images",
+        models_path="models",
+        predictions_file_path="predictions.txt",
         predictor=CLEARPredictor(),
     )
     evaluator.evaluation()
-    scores = evaluator.scoring(evaluator.ground_truth_path, evaluator.predictions_file_path)
-    print(scores)
 
 
 if __name__ == "__main__":
