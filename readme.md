@@ -1,7 +1,7 @@
 ![CLEAR](https://clear-benchmark.github.io/img/examples_new.png)
 
 # [CLEAR](https://www.aicrowd.com/challenges/cvpr-2022-clear-challenge/) | Starter Kit 
-[![Discord](https://img.shields.io/discord/565639094860775436.svg)](https://discord.gg/fNRrSvZkry)
+[![Discord](https://img.shields.io/discord/565639094860775436.svg)](https://discord.gg/fNRrSvZkry) [<img src="https://img.shields.io/badge/slack-@CLEAR_CVPR-yellow.svg?logo=slack">](https://join.slack.com/t/cvprclear/shared_invite/zt-17iae3bwh-YNMOVW4g1mzRNMtRSfdBTA)
 
 This repository is the CLEAR Challenge **Submission template and Starter kit** for [CVPR 2022 Workshop on Visual Perception and Learning in an Open World](https://www.cs.cmu.edu/~shuk/vplow.html)! Clone the repository to compete now!
 
