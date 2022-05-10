@@ -10,6 +10,14 @@ import json
 from pathlib import Path
 import copy
 import sys
+import config
+# IMPORTANT! Need to add avalanche to sys path
+if config.AVALANCHE_PATH:
+    print(f"Importing avalanche library path {config.AVALANCHE_PATH} to sys.path")
+    sys.path.append(config.AVALANCHE_PATH)
+else:
+    print("Please specify avalanche library path in config.py")
+    exit(0)
 
 import numpy as np
 import torch
@@ -29,14 +37,6 @@ from avalanche.training.plugins.lr_scheduling import LRSchedulerPlugin
 from avalanche.training.supervised import Naive
 from avalanche.benchmarks.classic.clear import CLEAR, CLEARMetric
 
-import config
-# IMPORTANT! Need to add avalanche to sys path
-if config.AVALANCHE_PATH:
-    print(f"Importing avalanche library path {config.AVALANCHE_PATH} to sys.path")
-    sys.path.append(config.AVALANCHE_PATH)
-else:
-    print("Please specify avalanche library path in config.py")
-    exit(0)
 
 # For CLEAR dataset setup
 print(
