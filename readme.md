@@ -92,7 +92,7 @@ You can add your SSH Keys to your GitLab account by going to your profile settin
     python starter_code.py
     ```
 
-9. Write your own predictor (including test-time data augmentation and model loading functions) as described in [how to write your own predictor](#how-to-write-your-own-predictor) section.
+9. Write your own predictor (including test-time data augmentation and model loading functions) as described in [what to provide for the evaluation](#what-to-provide-for-the-evaluation) section.
 
 10. Make a submission as described in [how to make a submission](#how-to-make-a-submission) section.
 
@@ -100,18 +100,23 @@ You can add your SSH Keys to your GitLab account by going to your profile settin
 <!-- # How to access and use the CLEAR dataset
 We have made CLEAR public on [Avalanche](https://avalanche.continualai.org). If you have used Avalanche for your other projects, then it is very easy to get started! Just pull the most recent commit from their official [repo](https://github.com/ContinualAI/avalanche), and check out [this example on how to train on CLEAR](https://github.com/ContinualAI/avalanche/blob/master/examples/clear.py). If you haven't used Avalanche before, you could use the [starter code](starter_code.py) provided to download CLEAR dataset from Avalanche, and perform training and evaluation in PyTorch only (so you don't need to know anything about Avalanche).  -->
 
-# What to provide for the evaluation?
-
-We require that you place your models in `models` directory and use the interface defined in `evaluation_setup.py`. 
-
-
 # Evaluation Metrics
 ![metrics](imgs/metrics.png)
 The submitted model will be evaluated against the private testsets to obtain an 10x10 accuracy matrix (we provide a 4x4 accuracy matrix above to visually illustrate how we calculate the metrics). The y-axis is the training timestamp and x-axis is the index of test bucket.
 
 The leaderboard will consists of the above 4 metrics. In-Domain and Next-Domain accuracy are proposed in the [CLEAR paper](https://arxiv.org/abs/2201.06289) for measuring the test performance within the same time period or the next immediate time period. Backward Transfer and Forward Transfer are defined similarly to prior works on continual learning.
 
-## How do I specify my software runtime / dependencies ?
+
+# What to provide for the evaluation?
+
+We require that you place your 10 trained models in `models` directory and use the interface defined in `evaluation_setup.py`. In `evaluation_setup.py`, you need to explicitly provide the two following functions so that we can evaluate your models and auto-generated your scores on our end. 
+- `load_models(models_path)` takes in the path to the 10 trained models, i.e. `models/`, and it should return a list of loaded models. How you load each of them is up to you and should be consistent with how you saved your models. For example, if you saved your models as its parameter dictionary, then you want to use `torch.nn.Module.load_state_dict`; otherwise if you saved the entire model, you want to use `torch.save` directly. [Note that if you trained your models using `torch.nn.DataParallel`, there will be `module.` inserted at the beginning of each key of your saved state_dict, in which case loading the state_dict onto a model from `torchvision.models` will fail. Therefore, you need to remove the `module.` key when implementing this function, as already shown in the [example](evaluation_setup.py).
+- `data_transform()` describes the data transform you used to test your 10 models, which should be consistent with the data transform used against your training data to train your 10 models initially. Only with this can we transform the held-out test data accordingly and evaluate your models. 
+
+Finally one step before you can actually submit your great work! To validate your `evaluation_setup.py` as well as the about-to-submit models, run `local_evaluation.py` by specifying the path to your downloaded dataset from Avalanche. It should generate a weighted average score, which will be used for your ranking on the leaderboard, as well as four scores corresponding to the four metrics as described above. 
+
+
+# How do I specify my software runtime / dependencies ?
 
 We accept submissions with custom runtime, so you don't need to worry about which libraries or framework to pick from.
 
@@ -119,7 +124,7 @@ The configuration files typically include `requirements.txt` (pypi packages), `e
 
 You can check detailed information about the same in the 👉 [RUNTIME.md](docs/runtime.md) file.
 
-## What should my code structure be like ?
+# What should my code structure be like ?
 
 Please follow the example structure as it is in the starter kit for the code structure.
 The different files and directories have following meaning:
@@ -153,7 +158,7 @@ This JSON is used to map your submission to the challenge - so please remember t
 
 Also, make sure the ```gpu``` flag is true so we can speed up the evaluation. 
 
-## How to make a submission?
+# How to make a submission?
 
 We have added a quick submission utility script as part of this starter kit, to keep things simple. You can make submission as follows:
 
