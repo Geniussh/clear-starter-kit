@@ -101,7 +101,7 @@ You can add your SSH Keys to your GitLab account by going to your profile settin
 <!-- # How to access and use the CLEAR dataset
 We have made CLEAR public on [Avalanche](https://avalanche.continualai.org). If you have used Avalanche for your other projects, then it is very easy to get started! Just pull the most recent commit from their official [repo](https://github.com/ContinualAI/avalanche), and check out [this example on how to train on CLEAR](https://github.com/ContinualAI/avalanche/blob/master/examples/clear.py). If you haven't used Avalanche before, you could use the [starter code](starter_code.py) provided to download CLEAR dataset from Avalanche, and perform training and evaluation in PyTorch only (so you don't need to know anything about Avalanche).  -->
 
-**[IMPORTANT] You are not allowed to pre-train your models on any data. The models have to be learned from scratch. For example, in ```starter_code.py``` the models are trained from scratch on the ResNet-18 architecture. **
+<mark>**[IMPORTANT] You are not allowed to pre-train your models on any data. The models have to be learned from scratch. For example, in ```starter_code.py``` the models are trained from scratch on the ResNet-18 architecture.**</mark>
 
 
 # Evaluation Metrics
@@ -177,7 +177,7 @@ Example: ./submit.sh "bayes v0.1"
 
 In case you don't want to use this utility script, please check out the submission guidelines [SUBMISSION.md](docs/SUBMISSION.md).
 
-**[IMPORTANT] You must provide a brief explanation or discussion about your submission in the auto-generated GitLab issue after it's successfully evaluated. **
+<mark>**[IMPORTANT] You must provide a brief explanation or discussion about your submission in the auto-generated GitLab issue after it's successfully evaluated.**</mark>
 
 **Best of Luck** :tada: :tada:
 
