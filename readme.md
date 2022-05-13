@@ -88,18 +88,21 @@ You can add your SSH Keys to your GitLab account by going to your profile settin
 
 7. **(Optional) Modify** [config.py](./config.py) with your local path to avalanche library.
 
-8. Start training via running:
+8. Start training the baseline models via running:
     ```
     python starter_code.py
     ```
 
-9. Write your own predictor (including test-time data augmentation and model loading functions) as described in [what to provide for the evaluation](#what-to-provide-for-the-evaluation) section.
+9. Write the helper functions for your own predictor (including test-time data augmentation and model loading functions) as described in [what to provide for the evaluation](#what-to-provide-for-the-evaluation) section.
 
 10. Make a submission as described in [how to make a submission](#how-to-make-a-submission) section.
 
 
 <!-- # How to access and use the CLEAR dataset
 We have made CLEAR public on [Avalanche](https://avalanche.continualai.org). If you have used Avalanche for your other projects, then it is very easy to get started! Just pull the most recent commit from their official [repo](https://github.com/ContinualAI/avalanche), and check out [this example on how to train on CLEAR](https://github.com/ContinualAI/avalanche/blob/master/examples/clear.py). If you haven't used Avalanche before, you could use the [starter code](starter_code.py) provided to download CLEAR dataset from Avalanche, and perform training and evaluation in PyTorch only (so you don't need to know anything about Avalanche).  -->
+
+**[IMPORTANT] You are not allowed to pre-train your models on any data. The models have to be learned from scratch. For example, in ```starter_code.py``` the models are trained from scratch on the ResNet-18 architecture. **
+
 
 # Evaluation Metrics
 ![metrics](imgs/metrics.png)
@@ -174,6 +177,7 @@ Example: ./submit.sh "bayes v0.1"
 
 In case you don't want to use this utility script, please check out the submission guidelines [SUBMISSION.md](docs/SUBMISSION.md).
 
+**[IMPORTANT] You must provide a brief explanation or discussion about your submission in the auto-generated GitLab issue after it's successfully evaluated. **
 
 **Best of Luck** :tada: :tada:
 
