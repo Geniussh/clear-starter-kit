@@ -86,6 +86,9 @@ class CLEAREvaluator:
         weights = np.array([0.25, 0.25, 0.25, 0.25])
         score = np.array([evals[key] for key in evals.keys()]) @ weights
 
+        # Plot accuracy matrix
+        plot_2d_matrix(predictions, [str(i) for i in range(1,11)], "Accuracy Matrix", "accuracy_matrix", save_path=".")
+
         scores = {
             "score": score,
             "score_secondary": evals['next_domain'],

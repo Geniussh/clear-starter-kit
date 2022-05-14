@@ -11,6 +11,7 @@ THIS FILE IS PROVIDED ONLY FOR YOUR CONVINIENCE TO TEST THE CODE LOCALLY.
 """
 
 import os
+import argparse
 import numpy as np
 import torch
 import torchvision.transforms as transforms
@@ -22,7 +23,6 @@ from torch.utils.data import DataLoader
 
 # Import participant's prediction class
 from evaluation_setup import load_models, data_transform
-
 
 class CLEARPredictor(BaseCLEARPredictor):
     def __init__(self, bucket_num=10, use_gpu=True):
@@ -72,13 +72,30 @@ class CLEARPredictor(BaseCLEARPredictor):
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Local Evaluation Test")
+    parser.add_argument(
+        "--dataset-path",
+        required=True,
+        dest="dataset_path",
+        help="Path to dir containing extracted dataset",
+    )
+    args = parser.parse_args()
+    
     evaluator = CLEAREvaluator(
-        test_data_path="datasets/clear10/labeled_images",
+        test_data_path=args.dataset_path,
         models_path="models",
         predictions_file_path="predictions.txt",
         predictor=CLEARPredictor(),
     )
-    evaluator.evaluation()
+    evaluator.evaluation()  # Make predictions and calculate accuracy matrix
+
+    # Compute four metrics and plot accuracy matrix at accuracy_matrix.png by default
+    scores = evaluator.scoring(prediction_file_path="predictions.txt")
+    print("Weighted Average Score: %.3f" % scores['score'])
+    print("Next-Domain Accuracy: %.3f" % scores['score_secondary'])
+    print("In-Domain Accuracy: %.3f" % scores['meta']['in_domain_accuracy'])
+    print("Backward Transfer Accuracy: %.3f" % scores['meta']['backward_transfer'])
+    print("Forward Transfer Accuracy: %.3f" % scores['meta']['forward_transfer'])
 
 
 if __name__ == "__main__":
