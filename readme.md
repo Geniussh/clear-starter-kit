@@ -117,7 +117,11 @@ We require that you place your 10 trained models in `models` directory and use t
 - `load_models(models_path)` takes in the path to the 10 trained models, i.e. `models/`, and it should return a list of loaded models. How you load each of them is up to you and should be consistent with how you saved your models. For example, if you saved your models as its parameter dictionary, then you want to use `torch.nn.Module.load_state_dict`; otherwise if you saved the entire model, you want to use `torch.save` directly. [Note that if you trained your models using `torch.nn.DataParallel`, there will be `module.` inserted at the beginning of each key of your saved state_dict, in which case loading the state_dict onto a model from `torchvision.models` will fail. Therefore, you need to remove the `module.` key when implementing this function, as already shown in the [example](evaluation_setup.py).
 - `data_transform()` describes the data transform you used to test your 10 models, which should be consistent with the data transform used against your training data to train your 10 models initially. Only with this can we transform the held-out test data accordingly and evaluate your models. 
 
-Finally one step before you can actually submit your great work! To validate your `evaluation_setup.py` as well as the about-to-submit models, run `local_evaluation.py` by specifying the path in `main()`, which should direct to your downloaded dataset from Avalanche, i.e. `<config.ROOT>/<config.DATASET_NAME>/labeled_images`. It should generate a weighted average score, which will be used for your ranking on the leaderboard, as well as four scores corresponding to the four metrics as described above. 
+Finally one step before you can actually submit your great work! To validate your `evaluation_setup.py` as well as your models, run `python local_evaluation.py` by passing in the path to the dataset, which should direct to your downloaded dataset from Avalanche, i.e. `<config.ROOT>/<config.DATASET_NAME>/labeled_images`. 
+```
+python local_evaluation.py --dataset-path <config.ROOT>/<config.DATASET_NAME>/labeled_images
+```
+It would print a weighted average score, which will be used for your ranking on the leaderboard, four scores corresponding to the four metrics as described above, and a visualization of the accuracy matrix in `accuracy_matrix.png`. 
 
 
 # How do I specify my software runtime / dependencies ?
