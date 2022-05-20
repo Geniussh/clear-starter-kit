@@ -86,7 +86,7 @@ You can add your SSH Keys to your GitLab account by going to your profile settin
     conda env update --file avalanche/environment.yml
     ```
 
-7. **(Optional) Modify** [config.py](./config.py) with your local path to avalanche library.
+7. **Modify** [config.py](./config.py) with respect to the task you are submitting to. Change ```AVALANCHE_PATH``` to your local path to avalanche library. ```DATASET_NAME``` is to specify which dataset you will use to train and test your models, either ```clear10``` or ```clear100_cvpr2022```. ```ROOT``` will be the local path to save the corresponding dataset. 
 
 8. Start training the baseline models via running:
     ```
@@ -95,7 +95,7 @@ You can add your SSH Keys to your GitLab account by going to your profile settin
 
 9. Write the helper functions for your own predictor (including test-time data augmentation and model loading functions) as described in [what to provide for the evaluation](#what-to-provide-for-the-evaluation) section.
 
-10. Make a submission as described in [how to make a submission](#how-to-make-a-submission) section.
+10. Make a submission as described in [how to make a submission](#how-to-make-a-submission) section. **IMPORTANT** Remember to change the ```task``` field to the subtask you are submitting to, either ```clear10``` or ```clear100```. 
 
 
 <!-- # How to access and use the CLEAR dataset
