@@ -1,16 +1,18 @@
 ################################################################################
-# Date: 05-09-2022                                                             #
+# Date: 05-17-2022                                                             #
 # Author: Jia Shi, Zhiqiu Lin                                                  #
 # E-mail: jiashi@andrew.cmu.edu, zl279@cornell.edu                             #
 # Website: https://clear-benchmark.github.io                                   #
 ################################################################################
 '''Example: Training and evaluating on CLEAR benchmark (RGB images)
 '''
+import os
 import json
 from pathlib import Path
 import copy
 import sys
 import config
+from config import DATASET_NAME
 # IMPORTANT! Need to add avalanche to sys path
 if config.AVALANCHE_PATH:
     print(f"Importing avalanche library path {config.AVALANCHE_PATH} to sys.path")
@@ -43,10 +45,14 @@ print(
     f"This script will train on {config.DATASET_NAME}. "
     "You may change the dataset in config.py."
 )
-DATASET_NAME = config.DATASET_NAME
-NUM_CLASSES = {"clear10": 11}
+# For CLEAR dataset setup
+NUM_CLASSES = {"clear10": 11, "clear100_cvpr2022": 100}
+assert DATASET_NAME in NUM_CLASSES.keys()
 
+# please refer to paper for discussion on streaming v.s. iid protocol
 EVALUATION_PROTOCOL = "streaming"  # trainset = testset per timestamp
+# EVALUATION_PROTOCOL = "iid"  # 7:3 trainset_size:testset_size
+
 
 # Paths for saving datasets/models/results/log files
 print(
@@ -125,6 +131,7 @@ else:
     seed = 0
 
 scenario = CLEAR(
+    data_name=DATASET_NAME,
     evaluation_protocol=EVALUATION_PROTOCOL,
     feature_type=None,
     seed=seed,
@@ -203,7 +210,6 @@ def train(loader, model):
             optimizer.zero_grad()
             input = input.cuda()
             target = target.cuda()
-            # import pdb;pdb.set_trace()
             pred = model(input)
             loss = cross_entropy_loss(pred, target)
             loss.backward()
